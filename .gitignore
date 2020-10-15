@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 .idea/
 data/offline_data
+data/online_data/caijing_clean.csv
