@@ -6,7 +6,7 @@ import pandas as pd
 import copy
 from nmt_trans.utils import data_getter
 
-data_getter.get_data()
+# data_getter.get_data()
 
 
 class TagHelper(object):
@@ -297,7 +297,8 @@ def words2dict(word_list, start=0):
 
 if __name__ == "__main__":
     # for testing data
-    test_f = "../online_data/caijing_clean_bak.csv"
+    from nmt_trans.utils import file_helper
+    test_f = file_helper.get_online_data("caijing_clean.csv")
     test_str = "UNISOC last year accelerated its 5G chip development to catch up with Qualcomm and MediaTek, Nikkei reported earlier. More recently the Chinese mobile chip developer recently received 4.5 billion yuan ($630 million) from China's national integrated circuit fund, the so-called Big Fund, and is preparing to list on the Shanghai STAR tech board, the Chinese version of Nasdaq, later this year. U.S.-based Qualcomm has had to have a license from the Department of Commerce to supply Huawei since May 16 last year."
     test_zh = "日经指数早先报道称，去年，为了赶上高通( Qualcomm )和联发科技( MediaTek ) ，该公司加快了5G芯片开发的步伐。最近，这家中国移动芯片开发商从中国国有集成电路基金（简称“大额基金” ）获得了45亿元人民币（合6.3亿美元）的资金，并准备于今年晚些时候在中国版的纳斯达克( Nasdaq ) — —科创板上市。自去年5月16日以来，总部位于美国的高通( Qualcomm )不得不获得美国商务部( Department of Commerce )的许可，才能为华为供货。"
     tag_helper = TagHelper(test_f)

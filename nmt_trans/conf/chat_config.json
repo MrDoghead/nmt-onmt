@@ -1,8 +1,8 @@
 {
-  "raw_data_dir": "data/offline_data/clean_chat_corpus",
-  "raw_tot_data": "data/offline_data/raw_chat_corpus.csv",
-  "tmp_src_train_path": "data/offline_data/tmp/src_train.csv",
-  "tmp_src_test_path": "data/offline_data/tmp/src_test.csv",
+  "raw_org_data": "/data/translate/hb_trans/raw_para_corpus/all_1kw",
+  "raw_tag_data": "data/offline_data/raw_para_corpus/all_1kw_tagged_v2",
+  "preped_dir": "data/offline_data/prep_corpus/prep_1kw_tagged_v2",
+  "preped_base_name": "all",
   "tmp_dst_train_path": "data/offline_data/tmp/dst_train.csv",
   "tmp_dst_test_path": "data/offline_data/tmp/dst_test.csv",
   "tmp_tot_word_path": "data/offline_data/tmp/tran_word_file.csv",
