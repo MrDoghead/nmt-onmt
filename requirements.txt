@@ -1,0 +1,17 @@
+pandas
+numpy
+scikit-learn
+jieba
+tqdm
+subword_nmt
+sacremoses==0.0.43
+pathos
+requests
+OpenNMT-py
+ctranslate2
+flask
+flask_cors
+pyahocorasick==1.4.0
+pymysql
+flask_apscheduler
+
