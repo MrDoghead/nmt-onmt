@@ -21,6 +21,7 @@ class RawPreprocessor(object):
         dict_path = file_helper.get_online_data("caijing_clean.csv")
         self.tag_adder = add_tag.PrecessTag(dict_path)
         self.mk_dirs()
+        self.bpe_path = file_helper.get_online_data(self.conf.bpe_code_path)
 
     def mk_dirs(self):
         dir_arr = [
@@ -34,6 +35,9 @@ class RawPreprocessor(object):
         self.tag_adder.process_en(self.org_corpus_dir, self.org_tag_dir, self.prep_base_name)
         print("finished adding data")
         tok_and_clean.main(self.org_tag_dir, self.prep_dir, self.prep_base_name)
+        # 最后将bpe 放到online_data 为便于预测
+        file_helper.cp_f(os.path.join(self.prep_dir, "code.en"), self.bpe_path)
+        file_helper.cp_f(os.path.join(self.prep_dir, "code.zh"), self.bpe_path)
 
 
 if __name__ == "__main__":

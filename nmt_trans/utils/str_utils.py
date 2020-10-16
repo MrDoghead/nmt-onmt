@@ -7,6 +7,7 @@ from nmt_trans.tokenizer.basic_tokenizer import BaseTokenizer
 
 upper_pat = re.compile(r'^[A-Z.]+$')
 tokenizer = BaseTokenizer()
+sub_en_sen_pat = re.compile(r'([,，\n.]+)')
 
 
 def str2md5(str_):
@@ -89,6 +90,19 @@ def _is_consective(elem, _arr):
     if _arr[-1] + 1 == elem:
         return True
     return False
+
+
+def split_sub_sen(sen):
+    if sen is None:
+        return None
+    sub_arr = re.split(sub_en_sen_pat, sen)
+    if len(sub_arr) % 2 != 0:
+        sub_arr.append("")
+    a1 = sub_arr[::2]
+    a2 = sub_arr[1::2]
+    x = zip(a1, a2)
+    res = ["".join(elem) for elem in x]
+    return res
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 # coding=utf8
 
 import os
+import shutil
 
 
 def mk_data_folder():
@@ -73,7 +74,19 @@ def get_online_data(f_path):
     return os.path.join(_dir, f_path)
 
 
+def cp_dir(src_dir, dst_dir):
+    if os.path.exists(dst_dir):
+        shutil.rmtree(dst_dir)
+    shutil.copytree(src_dir, dst_dir)
+
+
+def cp_f(src_file, dst_dir):
+    shutil.copy(src_file, dst_dir)
+
+
 if __name__ == "__main__":
     print(("project_path", get_project_path()))
     print(os.listdir(get_project_path()))
+
+
 
