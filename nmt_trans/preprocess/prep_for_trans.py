@@ -14,9 +14,9 @@ from nmt_trans.preprocess import tok_and_clean
 class RawPreprocessor(object):
     def __init__(self, conf):
         self.conf = conf
-        self.org_corpus_dir = self.conf.raw_org_data
-        self.org_tag_dir = self.conf.raw_tag_data
-        self.prep_dir = self.conf.preded_dir
+        self.org_corpus_dir = file_helper.get_real_path(self.conf.raw_org_data)
+        self.org_tag_dir = file_helper.get_abs_path(self.conf.raw_tag_data)
+        self.prep_dir = file_helper.get_abs_path(self.conf.preped_dir)
         self.prep_base_name = self.conf.preped_base_name
         dict_path = file_helper.get_online_data("caijing_clean.csv")
         self.tag_adder = add_tag.PrecessTag(dict_path)
@@ -32,4 +32,14 @@ class RawPreprocessor(object):
 
     def run(self):
         self.tag_adder.process_en(self.org_corpus_dir, self.org_tag_dir, self.prep_base_name)
+        print("finished adding data")
         tok_and_clean.main(self.org_tag_dir, self.prep_dir, self.prep_base_name)
+
+
+if __name__ == "__main__":
+    from nmt_trans.utils import conf_parser
+    import sys
+    conf_f = sys.argv[1]
+    t_conf = conf_parser.parse_conf(conf_f)
+    t_obj = RawPreprocessor(t_conf)
+    t_obj.run()
