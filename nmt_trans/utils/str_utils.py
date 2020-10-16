@@ -2,7 +2,7 @@
 
 import re
 import hashlib
-from basic_tokenizer import BaseTokenizer
+from nmt_trans.tokenizer.basic_tokenizer import BaseTokenizer
 
 
 upper_pat = re.compile(r'^[A-Z.]+$')
