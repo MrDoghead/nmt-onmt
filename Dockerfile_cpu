@@ -1,0 +1,22 @@
+FROM harbor.aigauss.com/base-images/tor15:0.6.0_cu101 
+
+RUN apt-get -y update && \
+	apt-get -y install build-essential
+ 
+RUN pip3 install gunicorn 
+
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+
+# WORKDIR /app/text_class_frame
+WORKDIR /app/nmt_trans
+COPY nmt_trans .
+ADD data /app/data
+
+ENV PYTHONPATH="${PYTHONPATH}:/app" 
+
+
+CMD gunicorn  -w 1 -b 0.0.0.0:8884 -t 3000 'web.www:load_app("conf/chat_config.json")'
+
+EXPOSE 9502 

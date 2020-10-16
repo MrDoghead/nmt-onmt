@@ -3,8 +3,8 @@
 import re
 import json
 from flask import request, Blueprint
-from hb_chat.utils import conf_parser
-from hb_chat import predictor
+from nmt_trans.utils import conf_parser
+from nmt_trans import predictor
 
 sen_sep = re.compile("([。？;\n])+")
 
@@ -22,7 +22,7 @@ def init_predictor(conf_path):
     predictor = predictor.Predictor(config)
 
 
-@route_entity.route('/chat', methods=['POST', 'GET'])
+@route_entity.route('/en_trans', methods=['POST', 'GET'])
 def get_filter_info():
     sen_triple_info = request.json
     sen_info_arr = sen_triple_info.get("text_list")

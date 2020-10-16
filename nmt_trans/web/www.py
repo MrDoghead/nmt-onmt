@@ -2,14 +2,13 @@
 
 from flask import Flask
 from flask_cors import *
-from hb_chat.web.info_ext_service import route_entity
-from hb_chat.web import info_ext_service
+from nmt_trans.web.info_ext_service import route_entity
+from nmt_trans.web import info_ext_service
 
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
-# app.register_blueprint(route_entity, url_prefix='/alg_NT')
-app.register_blueprint(route_entity, url_prefix="/chat")
+app.register_blueprint(route_entity, url_prefix="/new_trans")
 
 
 def load_app(conf_path):
