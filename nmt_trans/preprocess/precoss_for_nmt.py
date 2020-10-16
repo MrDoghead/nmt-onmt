@@ -1,7 +1,8 @@
 # coding=utf8
 
+import os
 from onmt.bin import preprocess
-from hb_chat.utils import file_helper, conf_parser
+from nmt_trans.utils import file_helper, conf_parser
 
 
 class NMTProcessor(object):
@@ -9,13 +10,14 @@ class NMTProcessor(object):
         self.conf = conf
         self.save_path = file_helper.get_abs_path(self.conf.train_info.train_fmt_path)
         file_helper.mk_folder_for_file(self.save_path)
+        self.prep_dir = self.conf.preped_dir
 
     def get_args(self, parser):
         args_dict = {
-            "train_src": file_helper.get_real_path(self.conf.src_train_path),
-            "train_tgt": file_helper.get_real_path(self.conf.dst_train_path),
-            "valid_src": file_helper.get_real_path(self.conf.src_test_path),
-            "valid_tgt": file_helper.get_real_path(self.conf.dst_test_path),
+            "train_src": file_helper.get_real_path(os.path.join(self.prep_dir, self.conf.src_train_path)),
+            "train_tgt": file_helper.get_real_path(os.path.join(self.prep_dir, self.conf.dst_train_path)),
+            "valid_src": file_helper.get_real_path(os.path.join(self.prep_dir, self.conf.src_test_path)),
+            "valid_tgt": file_helper.get_real_path(os.path.join(self.prep_dir, self.conf.dst_test_path)),
             "save_data": self.save_path,
             "overwrite": None,
             "src_seq_length": self.conf.train_info.src_seq_length,

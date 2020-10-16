@@ -5,10 +5,10 @@
 ### 设置环境变量
 export PYTHONPATH=$PYTHONPATH:"PATH_TO/chat_bot"
 ### 预处理数据
-cd hb_chat/preporcess
+cd nmt_trans/preprocess
 - 清洗翻译的语料： 去重等
 ```
-python process_org_data.py
+python prep_for_trans.py ../conf/chat_config.json
 ```
 - 将语料准备成平行语料， 并且进行分词，以及bpe
 ```
