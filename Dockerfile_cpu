@@ -13,9 +13,16 @@ WORKDIR /app/nmt_trans
 COPY nmt_trans .
 ADD data /app/data
 
-ENV PYTHONPATH="${PYTHONPATH}:/app" 
+ENV PYTHONPATH="${PYTHONPATH}:/app" \
+    DICT_HOST=rm-uf6it2u39agqevqh8.mysql.rds.aliyuncs.com \
+    DICT_PORT=3306 \
+    DICT_UNAME=spider \
+    DICT_PWD=spider_bot \
+    DICT_DB=tgy_spider \
+    DICT_TABLE=word_dict \
+    DICT_TYPE=""	
+	
 
+CMD gunicorn  -w 2 -b 0.0.0.0:8864 -t 3000 'web.www:load_app("conf/chat_config.json")'
 
-CMD gunicorn  -w 1 -b 0.0.0.0:8884 -t 3000 'web.www:load_app("conf/chat_config.json")'
-
-EXPOSE 9502 
+EXPOSE 8864 

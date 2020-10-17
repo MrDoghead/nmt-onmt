@@ -94,7 +94,7 @@ class Predictor(object):
 
         inputs, en_words_arr = self.pre_process(input_sens)
         input_list = [self._prep_sen(sen) for sen in inputs]
-        res_list = self.translator.translate_batch(input_list)
+        res_list = self.translator.translate_batch(input_list, beam_size=4,  num_hypotheses=1, max_decoding_length=200)
         f_result = [self._post_pro_sen(word_list) for word_list in res_list]
         ff_result = []
         for i, out_sen in enumerate(f_result):

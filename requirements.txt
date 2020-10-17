@@ -7,7 +7,7 @@ subword_nmt
 sacremoses==0.0.43
 pathos
 requests
-OpenNMT-py
+OpenNMT-py==1.1.1
 ctranslate2
 flask
 flask_cors
