@@ -9,7 +9,6 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 
-# WORKDIR /app/text_class_frame
 WORKDIR /app/nmt_trans
 COPY nmt_trans .
 ADD data /app/data

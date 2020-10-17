@@ -2,7 +2,7 @@
 
 import os
 import json
-from hb_translate.utils import file_helper
+from nmt_trans.utils import file_helper
 
 
 class EnZhMapper(object):

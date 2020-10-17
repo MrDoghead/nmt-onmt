@@ -132,3 +132,4 @@ data/offline_data
 data/online_data/caijing_clean.csv
 *.swp
 data/online_data/model_bin
+data/online_data/*c_trans.pt

@@ -20,7 +20,7 @@ class Predictor(object):
     def __init__(self, conf, cus_dict):
         self.conf = conf
         model_path = file_helper.get_real_path(self.conf.pred_info.c_model_path)
-        self.translator = ctranslate2.translator(model_path)
+        self.translator = ctranslate2.Translator(model_path)
         self.bpe = self._load_bpe()
         self.bpe_symbol = "@@ "
         self.tokenizer = mose_tokenizer.MTokenizer("en")
@@ -32,7 +32,7 @@ class Predictor(object):
         bpe_path = file_helper.get_real_path(self.conf.bpe_code_path)
         bpe_path = os.path.join(bpe_path, "code.en")
         with open(bpe_path) as in_:
-            bpe = apply_bpe.bpe(in_)
+            bpe = apply_bpe.BPE(in_)
             return bpe
 
     def _prep_sen(self, sen):
@@ -49,17 +49,17 @@ class Predictor(object):
         if self.tokenizer is not None:
             x = self.tokenizer.tokenize(x)
         if self.bpe is not None:
-            x = self.bpe.encode(x)
+            x = self.bpe.process_line(x)
         return x
 
     def decode_fn(self, x):
         if self.bpe is not None:
-            x = self.bpe.decode(x)
+            x = self._decode_bpe(x) 
         word_list = x.split()
         _need_sp = False
         result = []
         for word in word_list:
-            if not self._is_no_sapce_ch(word):
+            if not self._is_no_space_ch(word):
                 if _need_sp:
                     result.append(" ")
                 _need_sp = True
@@ -67,9 +67,6 @@ class Predictor(object):
                 _need_sp = False
             result.append(word)
         return "".join(result)
-
-    def _is_no_sapce_ch(self, x):
-        return re.match(no_space_ch_pat, x)
 
     def _post_pro_sen(self, word_list):
         word_list = word_list[0]["tokens"]
@@ -80,6 +77,9 @@ class Predictor(object):
 
     def _is_no_space_ch(self, x):
         return re.match(no_space_ch_pat, x)
+
+    def _decode_bpe(self, x: str) -> str:
+        return (x + ' ').replace(self.bpe_symbol, '').rstrip() 
 
     def _predict_impl(self, input_sens):
         emp_idxes = set()
@@ -170,7 +170,7 @@ class Predictor(object):
 
     def merge_sub_sens(self, sub_sens, sen_no_map):
         mid_sens = [""] * len(sen_no_map)
-        for i, sub_sen in range(sub_sens):
+        for i, sub_sen in enumerate(sub_sens):
             j = sen_no_map[i]
             mid_sens[j] = mid_sens[j] + sub_sen
         return mid_sens

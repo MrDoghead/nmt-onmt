@@ -3,7 +3,7 @@
   "raw_tag_data": "data/offline_data/raw_para_corpus/all_1kw_tagged_v2",
   "preped_dir": "data/offline_data/prep_corpus/prep_1kw_tagged_v2",
   "preped_base_name": "all",
-  "bpe_code_path": "data/online_data/bpe_codes",
+  "bpe_code_path": "data/online_data/bpe",
   "src_train_path": "train.en",
   "src_test_path": "val.en",
   "dst_train_path": "train.zh",
@@ -44,13 +44,13 @@
   },
   "model_path": "data/online_data/model_bin/nmt/cht",
   "eval_info": {
-    "model_suffix": "_step_85000.pt",
+    "model_suffix": "_step_50000.pt",
     "replace_unk": null,
     "verbose": null,
     "output": "data/offline_data/test_pred.cht"
   },
   "pred_info": {
-    "c_model_path": "data/online_data/model_bin/nmt/c_trans.pt",
+    "c_model_path": "data/online_data/nmt_c_trans.pt",
     "model_spec": "TransformerBase"
   }
 }
