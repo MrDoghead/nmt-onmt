@@ -47,7 +47,8 @@
     "model_suffix": "_step_50000.pt",
     "replace_unk": null,
     "verbose": null,
-    "output": "data/offline_data/test_pred.cht"
+    "output": "data/offline_data/test_pred.cht",
+	"quantization": "float16"
   },
   "pred_info": {
     "c_model_path": "data/online_data/nmt_c_trans.pt",

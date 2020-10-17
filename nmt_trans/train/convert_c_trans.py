@@ -15,6 +15,7 @@ class Converter(object):
         self.num_layers = self.conf.train_info.layers
         self.num_heads = self.conf.train_info.heads
         self.model_path = file_helper.get_abs_path(self.conf.model_path) + self.conf.eval_info.model_suffix
+        self.quant = self.conf.eval_info.quantization
 
     def get_args(self):
         need_keys = {"model_path", "model_spec", "output_dir"}
@@ -38,7 +39,7 @@ class Converter(object):
         converter = opennmt_py.OpenNMTPyConverter(self.model_path)
         out_path = file_helper.get_abs_path(self.conf.pred_info.c_model_path)
         file_helper.mk_folder_for_file(out_path)
-        converter.convert(out_path, model_spec, force=True)
+        converter.convert(out_path, model_spec, quantization=self.quant, force=True)
 
 
 def main():
