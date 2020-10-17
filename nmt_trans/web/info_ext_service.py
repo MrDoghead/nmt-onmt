@@ -23,7 +23,7 @@ def init_predictor(conf_path):
     predictor = nmt_pred.Predictor(config, dict_path)
 
 
-@route_entity.route('/en_trans', methods=['POST', 'GET'])
+@route_entity.route('/en2zh', methods=['POST', 'GET'])
 def get_filter_info():
     sen_triple_info = request.json
     sen_info_arr = sen_triple_info.get("text_list")
