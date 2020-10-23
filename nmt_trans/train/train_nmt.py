@@ -42,7 +42,9 @@ class Trainer(object):
 
 
 if __name__ == "__main__":
-    t_conf_path = file_helper.get_conf_file("chat_config.json")
+    import sys
+    t_conf_path = sys.argv[1]
+    # t_conf_path = file_helper.get_conf_file("chat_config.json")
     conf = conf_parser.parse_conf(t_conf_path)
     t_trainer = Trainer(conf)
     t_trainer.train()
