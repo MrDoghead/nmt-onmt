@@ -26,6 +26,7 @@ sen_sep_dict = {
     "en": re.compile(r'([.?\n\r]+)'),
     "zh": re.compile(r'([。？\n\r]+)')
 }
+zh_char_in_sentence = re.compile(r'.*[\u4e00-\u9fff]+.*')
 mpn = MosesPunctNormalizer()
 
 
@@ -182,7 +183,15 @@ def _is_keep(line1, line2, found_lines):
         return False
     if not _is_len_balance(line1, line2):
         return False
+    if _contains_chinese_char(line1):  # 判断英文line1中是否含有中文字符
+        return False
     return _is_not_duplicate(line1, line2, found_lines)
+
+
+def _contains_chinese_char(en_line):
+    if zh_char_in_sentence.match(en_line):
+        return True
+    return False
 
 
 def _is_not_duplicate(line1, line2, found_line):
