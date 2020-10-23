@@ -21,7 +21,7 @@ class RawPreprocessor(object):
         dict_path = file_helper.get_online_data("caijing_clean.csv")
         self.tag_adder = add_tag.PrecessTag(dict_path)
         self.mk_dirs()
-        self.bpe_path = file_helper.get_online_data(self.conf.bpe_code_path)
+        self.bpe_path = file_helper.get_abs_path(self.conf.bpe_code_path)
 
     def mk_dirs(self):
         dir_arr = [
