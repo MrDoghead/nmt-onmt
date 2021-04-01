@@ -1,8 +1,8 @@
 {
-  "raw_org_data": "/data/tao.hu/all_1kw_full",
-  "raw_tag_data": "data/offline_data/raw_para_corpus/all_1kw_tagged_v2",
-  "preped_dir": "data/offline_data/prep_corpus/prep_1kw_tagged_v2",
-  "preped_base_name": "all",
+  "raw_org_data": "/data/translate/hb_trans/raw_para_corpus/haiton_v1",
+  "raw_tag_data": "data/offline_data/raw_para_corpus/haiton_tagged_v1",
+  "preped_dir": "data/offline_data/prep_corpus/prep_haiton_v1",
+  "preped_base_name": "haiton_v1",
   "bpe_code_path": "data/online_data/bpe",
   "src_train_path": "train.zh",
   "src_test_path": "val.zh",
@@ -10,9 +10,8 @@
   "dst_test_path": "val.en",
 
   "train_info":{
-    "model_dtype": "fp16",
-    "apex_opt_level": "O2",
-    "train_fmt_path": "data/offline_data/nmt_1kw_v2/tagged_zh",
+    "vocab_path": "data/offline_data/nmt_1kw_v2/tagged_zh.vocab.pt",
+    "train_fmt_path": "data/offline_data/nmt_haiton_v1/tagged_zh",
     "src_seq_length": 200,
     "tgt_seq_length": 200,
     "layers": 6,
@@ -23,40 +22,38 @@
     "encoder_type": "transformer",
     "decoder_type": "transformer",
     "position_encoding": null,
-    "train_steps": 200000,
+    "train_steps": 215000,
     "max_generator_batches": 2,
     "dropout": 0.1,
-    "batch_size": 2048,
+    "batch_size": 1024,
     "valid_batch_size": 32,
     "batch_type": "tokens",
     "normalization": "tokens",
-    "accum_count": 8,
-    "optim": "fusedadam",
+    "accum_count": 4,
+    "optim": "adam",
     "adam_bta2": 0.998,
     "decay_method": "noam",
-    "warmup_steps": 8000,
+    "warmup_steps": 16000,
     "learing_rate": 2,
     "max_grad_norm": 0,
     "param_init": 0,
     "param_init_glorot": null,
     "label_smoothing": 0.1,
-    "keep_checkpoint": 20,
-    "valid_steps": 4000,
-    "save_checkpoint_steps": 4000,
+    "valid_steps": 1000,
+    "save_checkpoint_steps": 1000,
     "world_size": 4,
-    "gpu_ranks": [0, 1, 2, 3]
+    "gpu_ranks": [0, 1, 2, 3],
+    "train_from": "data/online_data/model_bin/nmt_zh_en/cht_step_200000.pt"
   },
-  "model_path": "data/offline_data/model_bin/nmt_zh_en/cht",
+  "model_path": "data/online_data/model_bin/nmt_zh_en_haiton/cht",
   "eval_info": {
-    "model_suffix": "_avg.pt",
-    "quantization": "float16",
+    "model_suffix": "_step_202000.pt",
     "replace_unk": null,
     "verbose": null,
     "output": "data/offline_data/test_pred.cht"
   },
   "pred_info": {
-    "c_model_path": "data/online_data/nmt_zh_en.pt",
-    "c_translate_thread": 16,
+    "c_model_path": "data/online_data/nmt_zh_en_haiton.pt",
     "model_spec": "TransformerBase"
-  }
+  } 
 }

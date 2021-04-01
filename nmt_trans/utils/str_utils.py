@@ -36,6 +36,16 @@ def is_all_upper(word):
     return False
 
 
+def remove_repeat_in_arr(text_arr):
+    pre_arr = _get_pre_arr(text_arr)
+    del_idxs = _get_del_ids(pre_arr)
+    res_text = []
+    for i, ch in enumerate(text_arr):
+        if i not in del_idxs:
+            res_text.append(ch)
+    return res_text
+
+
 def remove_repeat(text):
     char_arr = tokenizer.tokenize(text)
     pre_arr = _get_pre_arr(char_arr)
@@ -103,6 +113,21 @@ def split_sub_sen(sen):
     x = zip(a1, a2)
     res = ["".join(elem) for elem in x]
     return res
+
+
+def strQ2B(qstring):
+    if isinstance(qstring, list):
+        return [strQ2B(sen) for sen in qstring]
+    '''全角转半角'''
+    res = []
+    for char in qstring:
+        code = ord(char)
+        if code == 12288:
+            code = 32
+        elif code >= 65281 and code <= 65374:
+            code -= 65248
+        res.append(chr(code))
+    return ''.join(res)
 
 
 if __name__ == "__main__":

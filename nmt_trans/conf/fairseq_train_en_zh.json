@@ -1,0 +1,88 @@
+{
+  "raw_org_data": "/data/tao.hu/all_1kw_full",
+  "raw_tag_data": "data/offline_data/raw_para_corpus/all_1kw_tagged_v2",
+  "preped_dir": "data/offline_data/prep_corpus/prep_1kw_tagged_v2",
+  "preped_base_name": "all",
+  "src_train_path": "train.en",
+  "src_test_path": "val.en",
+  "dst_train_path": "train.zh",
+  "dst_test_path": "val.zh",
+
+  "bpe_code_path": "data/online_data/bpe",
+  
+  "fairseq_conf":{
+     "preprocess": {
+     	"source-lang": "en",
+     	"target-lang": "zh",
+	"trainpref": "data/offline_data/prep_corpus/prep_1kw_tagged_v2/train",
+        "validpref": "data/offline_data/prep_corpus/prep_1kw_tagged_v2/val", 
+    	"testpref": "data/offline_data/raw_para_corpus/haitong_test/test",
+        "destdir":  "data/offline_data/fairseq_en_zh_data_bin",
+        "workers": 24
+     },
+     "train": {
+        "save_dir": "data/offline_data/model_bin/en_zh/fq_v1",
+    	"arch": "transformer_wmt_en_de",
+    	"task": "translation", 
+    	"encoder-normalize-before": null,
+       	"decoder-normalize-before": null, 
+    	"max-source-positions": 5000 ,
+	"encoder-learned-pos": null, 
+    	"max-target-positions": 5000, 
+    	"decoder-learned-pos": null,
+    	"left-pad-source": false,
+    	"share-decoder-input-output-embed":null,
+    	"optimizer": "adam",
+       	"adam-betas": "(0.9, 0.98)",
+       	"clip-norm": 0.0, 
+    	"lr": 7e-4, 
+	"lr-scheduler": "inverse_sqrt", 
+	"warmup-updates": 4000,
+    	"dropout": 0.3, 
+	"weight-decay": 0.0, 
+    	"criterion": "label_smoothed_cross_entropy", 
+	"label-smoothing": 0.1, 
+    	"max-tokens": 4096,
+       	"update-freq": 32, 
+    	"max-update": 40000, 
+    	"keep-last-epochs": 40, 
+    	"no-save-optimizer-state": null,
+    	"log-interval": 10, 
+    	"fp16": null, 
+    	"log-format": "simple" 
+     }
+   },
+
+  "train_info":{
+    "model_dtype": "fp16",
+    "apex_opt_level": "O2",
+    "src_seq_length": 200,
+    "tgt_seq_length": 200,
+    "layers": 6,
+    "rnn_size": 1024,
+    "word_vec_size": 1024,
+    "transformer_ff": 4096,
+    "heads": 16,
+    "encoder_type": "transformer",
+    "decoder_type": "transformer",
+    "position_encoding": true,
+    "dropout": 0.1,
+    "batch_type": "tokens",
+    "normalization": "tokens",
+    "max_grad_norm": 0,
+    "param_init": 0,
+    "param_init_glorot": null
+  },
+  "model_path": "data/offline_data/model_bin/fairseq_large_checkpoints/cht",
+  "eval_info": {
+    "model_suffix": "_transfered.pt",
+    "quantization": "float16",
+    "replace_unk": null,
+    "verbose": null
+  },
+  "pred_info": {
+    "c_model_path": "data/online_data/nmt_zh_en_large.pt",
+    "c_translate_thread": 16,
+    "model_spec": "TransformerBase"
+  }
+}

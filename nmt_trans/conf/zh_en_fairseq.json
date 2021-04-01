@@ -1,0 +1,35 @@
+{
+  "bpe_code_path": "data/online_data/bpe",
+  "train_info":{
+    "model_dtype": "fp16",
+    "apex_opt_level": "O2",
+    "src_seq_length": 200,
+    "tgt_seq_length": 200,
+    "layers": 6,
+    "rnn_size": 512,
+    "word_vec_size": 512,
+    "transformer_ff": 2048,
+    "heads": 8,
+    "encoder_type": "transformer",
+    "decoder_type": "transformer",
+    "position_encoding": true,
+    "dropout": 0.1,
+    "batch_type": "tokens",
+    "normalization": "tokens",
+    "max_grad_norm": 0,
+    "param_init": 0,
+    "param_init_glorot": null
+  },
+  "model_path": "data/offline_data/model_bin/fairseq_checkpoints/cht",
+  "eval_info": {
+    "model_suffix": "_transfered.pt",
+    "quantization": "float16",
+    "replace_unk": null,
+    "verbose": null
+  },
+  "pred_info": {
+    "c_model_path": "data/online_data/nmt_zh_en_fs.pt",
+    "c_translate_thread": 16,
+    "model_spec": "TransformerBase"
+  }
+}

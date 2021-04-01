@@ -5,7 +5,7 @@
 ### 设置环境变量
 export PYTHONPATH=$PYTHONPATH:"PATH_TO/nmt_trans"
 ### 预处理数据
-cd nmt_trans/preprocess
+cd nmt_trans/preprocess 
 
 - 清洗翻译的语料： 去重, 并且进行分词，以及bpe
 ```
@@ -15,7 +15,7 @@ python prep_for_trans.py ../conf/chat_config.json
 - 处理输入数据集， 构建词典
 ```
 cd nmt_trans/preporcess
-python precoss_for_nmt.py
+python precoss_for_nmt.py ../conf/chat_config.json
 ```
 - 训练
 
@@ -24,10 +24,15 @@ cd nmt_trans/train
 CUDA_VISIBLE_DEVICES=0,2,4,5 nohup python train_nmt.py ../conf/chat_config.json > train_log2.txt &
 ```
 
+average ckpts
+```
+onmt_average_models -models MODELs -output OUTPUT
+```
+
 - 模型转成高效的c++格式
 ```
 cd nmt_trans/train
-python convert_c_trans.py
+python convert_c_trans.py ../conf/chat_config.json
 ```
 
 

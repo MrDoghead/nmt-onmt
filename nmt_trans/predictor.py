@@ -7,7 +7,7 @@ from subword_nmt import apply_bpe
 from nmt_trans.utils import file_helper, conf_parser, str_utils
 from nmt_trans.tokenizer import jieba_tokenizer, mose_tokenizer
 from nmt_trans.utils.trans_dict_manager import EnZhMapper
-from nmt_trans.utils import custom_tag
+from nmt_trans.tags import custom_tag
 from nmt_trans.utils.str_utils import split_sub_sen
 
 no_space_ch_pat = re.compile(r'[\u4e00-\u9fa5<>\\()（）]+')
@@ -70,9 +70,9 @@ class Predictor(object):
 
     def _post_pro_sen(self, word_list):
         word_list = word_list[0]["tokens"]
+        word_list = str_utils.remove_repeat_in_arr(word_list)
         ans_str = " ".join(word_list)
         ans_str = self.decode_fn(ans_str)
-        ans_str = str_utils.remove_repeat(ans_str)
         return ans_str
 
     def _is_no_space_ch(self, x):
@@ -171,8 +171,9 @@ class Predictor(object):
     def merge_sub_sens(self, sub_sens, sen_no_map):
         mid_sens = [""] * len(sen_no_map)
         for i, sub_sen in enumerate(sub_sens):
-            j = sen_no_map[i]
-            mid_sens[j] = mid_sens[j] + sub_sen
+            if i in sen_no_map:
+                j = sen_no_map[i]
+                mid_sens[j] = mid_sens[j] + sub_sen
         return mid_sens
 
     def predict(self, input_sens):
@@ -186,7 +187,7 @@ def test(sens):
     conf_path = file_helper.get_conf_file("chat_config.json")
     conf = conf_parser.parse_conf(conf_path)
     dict_path = file_helper.get_online_data("caijing_clean.csv")
-    predictor = Predictor(conf, dict_path )
+    predictor = Predictor(conf, dict_path)
     res = predictor.predict(sens)
     for sen in res:
         print(sen)

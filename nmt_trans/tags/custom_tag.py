@@ -5,11 +5,12 @@ import ahocorasick
 import pandas as pd
 import copy
 from nmt_trans.utils import data_getter
+from nmt_trans.tags.base_tag import BaseTagHelper
 
-# data_getter.get_data()
+data_getter.get_data()
 
 
-class TagHelper(object):
+class TagHelper(BaseTagHelper):
     def __init__(self, dict_path):
         en_words, zh_words, self.en2zh, self.zh2en = self._read_dict(dict_path)
         self.en_ac = self._build_ac(en_words)
@@ -23,6 +24,7 @@ class TagHelper(object):
             "del": self.__delete_words,
         }
         self.match_pat = re.compile(rf'{self.begin_sign}([\d]+){self.end_sign}')
+        self.non_space_pat = r'[(（]+\s*[)）]+'
 
     def _read_dict(self, f_path):
         df = pd.read_csv(f_path)
@@ -182,20 +184,80 @@ class TagHelper(object):
 
     def _decode_imp(self, sen, id2word, word_map_func):
         if len(id2word) < 1:
-            return sen
+            return sen, True
+        ids = set(id2word.keys())
+        ids_produced = set()
         new_sen = sen
         match_arr = re.finditer(self.match_pat, sen)
         for match in match_arr:
             match_str = match.group(0)
             en_id = int(match.group(1).strip())
+            ids_produced.add(en_id)
             org_word = id2word.get(en_id, None)
             if org_word is not None:
                 dest_word = word_map_func(org_word)
                 if dest_word is not None:
                     new_sen = new_sen.replace(match_str, dest_word)
-        new_sen = new_sen.replace(self.begin_sign, "")
-        new_sen = new_sen.replace(self.end_sign, "")
-        return new_sen
+        # new_sen = new_sen.replace(self.begin_sign, "")
+        # new_sen = new_sen.replace(self.end_sign, "")
+        return new_sen, ids == ids_produced
+
+    @property
+    def upsample_ratio(self):
+        return 8
+    
+    def tag_parallel(self, en_line, zh_line):
+        en_tags = self.search_en(en_line)
+        if len(en_tags) < 1:
+            return [(en_line, zh_line)]
+        en_words = [en_line[s:e+1] for s, e in en_tags]
+    
+        zh_tags = self.search_zh(zh_line)
+        if len(zh_tags) < 1:
+            return [(en_line, zh_line)]
+        
+        def get_word_pos_dict(sen, pos_list):
+            res = dict()
+            for s, e in pos_list:
+                key = sen[s:e+1]
+                if key not in res:
+                    res[key] = []
+                res[key].append((s, e+1))
+            return res
+        
+        def remove_rep_words(sen, rep_words):
+            for word in rep_words:
+                sen = sen.replace(word, "")
+            sen = re.sub(self.non_space_pat, "", sen)
+            return sen        
+        
+        samples = []
+        for _ in range(self.upsample_ratio):
+            cnt_start = self.cnt_start
+            
+            en_word2num = words2dict(en_words, cnt_start)
+
+            zh_word_pos_dict = get_word_pos_dict(zh_line, zh_tags)
+            f_en_pos_2_tag = {}
+            f_zh_pos_2_tag = {}
+            rep_en_words = set()
+            for i, en_word in enumerate(en_words):
+                tmp_zh_word = self.get_zh(en_word)
+                if tmp_zh_word is not None and tmp_zh_word in zh_word_pos_dict:
+                    rep_en_words.add(en_word)
+                    s, e = en_tags[i]
+                    cur_en_pos = en_word2num.get(en_word)
+                    f_en_pos_2_tag[(s, e+1)] = (en_word, cur_en_pos)
+                    for tmp_zh_pos in zh_word_pos_dict[tmp_zh_word]:
+                        f_zh_pos_2_tag[tmp_zh_pos] = (tmp_zh_word, cur_en_pos)
+            new_enline = self.replace_line(en_line, f_en_pos_2_tag)
+            new_zhline = self.replace_line(zh_line, f_zh_pos_2_tag)
+            new_zhline = remove_rep_words(new_zhline, rep_en_words)
+            samples.append((new_enline, new_zhline))
+        if samples[0] == samples[1]:
+            return [(en_line, zh_line)]
+        else:
+            return samples
 
     def update_batchly(self):
         """

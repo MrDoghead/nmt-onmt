@@ -15,7 +15,6 @@ from nmt_trans.tokenizer import jieba_tokenizer, mose_tokenizer
 from nmt_trans.utils import str_utils
 from pathos.multiprocessing import ProcessingPool as Pool
 
-
 BPE_TOKENS = 35000
 max_words = 200
 min_words = 2
@@ -28,19 +27,17 @@ sen_sep_dict = {
 }
 zh_char_in_sentence = re.compile(r'.*[\u4e00-\u9fff]+.*')
 mpn = MosesPunctNormalizer()
-# 在bpe中保留tag tokens
-tag_tokens = ["｟.?\d+｠"]
 
 
 def cut_list(data, batch_size):
-    return [data[x:x+batch_size] for x in range(0, len(data), batch_size)]
+    return [data[x:x + batch_size] for x in range(0, len(data), batch_size)]
 
 
 def parallel(func: callable, data: list, num_worker: int = 3, debug=False) -> callable:
     if num_worker == 1:
         return func(data)
 
-    batch_size = len(data)//num_worker + 1
+    batch_size = len(data) // num_worker + 1
     with Pool(num_worker) as p:
         res = p.map(func, cut_list(data, batch_size))
         if debug:
@@ -70,7 +67,7 @@ class DataPrepare(object):
         return tokenizer.tokenize(line)
 
 
-def main(in_dir, out_dir, base_name):
+def main(in_dir, out_dir, base_name, code_arr):
     # import ipdb; ipdb.set_trace()
     preparer = DataPrepare()
     # base_name = "train.lang."
@@ -89,8 +86,7 @@ def main(in_dir, out_dir, base_name):
     train_arr, val_arr = _main_split_dir(filtered_path_arr, tmp_dir)
 
     # 第四步：生成bpe code
-    code_arr = _main_create_bpe(out_dir, train_arr)
-
+    # code_arr = _main_create_bpe(out_dir, train_arr)
     # 第五步： 对所有的测试数据以及训练数据进行bpe 编码
     _main_apply_bpe(out_dir, train_arr, code_arr)
     _main_apply_bpe(out_dir, val_arr, code_arr)
@@ -119,7 +115,7 @@ def _clean_and_tok(in_dir, out_dir, base_name, lang, preparer):
                         word_list_arr = parallel(lambda x: _cut_and_save(x, lang, preparer), line_arr, num_worker=30)
                         _save_lines(word_list_arr, out_)
                         line_arr = []
-            
+
                 i += 1
                 sen_list = _clean_sen(line, lang)
                 line_arr.extend(sen_list)
@@ -217,9 +213,9 @@ def _is_valid_len(line):
 def _is_len_balance(line1, line2):
     len1 = len(line1.split())
     len2 = len(line2.split())
-    if len1 > 1.3 * len2:
+    if len1 > 1.5 * len2:
         return False
-    if len2 > 1.3 * len1:
+    if len2 > 1.5 * len1:
         return False
     return True
 
@@ -296,7 +292,7 @@ def _main_apply_bpe(out_dir, f_arr, code_arr):
 
 def _apply_bpe(out_path, f_path, code_path):
     with open(code_path) as f_code:
-        bpe = apply_bpe.BPE(f_code, glossaries=tag_tokens)
+        bpe = apply_bpe.BPE(f_code)
         i = 0
         with open(out_path, "w") as out_:
             with open(f_path) as in_:
@@ -328,9 +324,11 @@ def _save_lines(lines, out_):
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', type=str)
     parser.add_argument('--output', type=str)
     parser.add_argument('--fbase', type=str)
+    parser.add_argument('--code_path_arr', type=str)
     args = parser.parse_args()
-    main(args.input, args.output, args.fbase)
+    main(args.input, args.output, args.fbase, args.code_path_arr)

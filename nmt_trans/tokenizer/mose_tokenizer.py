@@ -4,7 +4,7 @@ from sacremoses import MosesTokenizer, MosesDetokenizer
 
 
 class MTokenizer(object):
-    def __init__(self, lang, protected_patterns=["<ent>", "<N>", r"｟\d+｠"], not_split_dash=False):
+    def __init__(self, lang, protected_patterns=["<ent>", "<N>", r"｟.?\d+｠"], not_split_dash=False):
         self.tokenizer = MosesTokenizer(lang=lang)
         self.protected_patterns = protected_patterns
         self.split_dash = not_split_dash
@@ -24,5 +24,5 @@ class MDTokenizer(object):
 if __name__ == "__main__":
     _dict_path = "../online_data/mose-dict.txt"
     test_toker = MTokenizer("en")
-    test_str = "recently ｟20｠ cause some people died"
+    test_str = "recently ｟20｠ cause ｟k25｠ some ｟n30｠ people died,//"
     print(test_toker.tokenize(test_str))

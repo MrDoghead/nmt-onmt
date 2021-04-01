@@ -1,3 +1,5 @@
+# For followme en2zh release
+
 FROM harbor.aigauss.com/base-images/tor15:0.6.0_cu101 
 
 RUN apt-get -y update && \
@@ -14,15 +16,15 @@ COPY nmt_trans .
 ADD data /app/data
 
 ENV PYTHONPATH="${PYTHONPATH}:/app" \
-    DICT_HOST=rm-uf6it2u39agqevqh8.mysql.rds.aliyuncs.com \
-    DICT_PORT=3306 \
-    DICT_UNAME=spider \
-    DICT_PWD=spider_bot \
-    DICT_DB=tgy_spider \
-    DICT_TABLE=word_dict \
+	DICT_HOST=alibeta-mysql.followme-internal.com\
+    DICT_PORT=3326\
+    DICT_UNAME=fmbetadb002\
+    DICT_PWD=31Bawd0c5GEq\
+    DICT_DB=news_tag\
+    DICT_TABLE=word_dict\
     DICT_TYPE=""	
 	
 
-CMD gunicorn  -w 2 -b 0.0.0.0:8864 -t 3000 'web.www:load_app("conf/chat_config.json", "conf/zh_en_increamental.json")'
+CMD gunicorn  -w 2 -b 0.0.0.0:8864 -t 3000 'web.www:load_app("conf/chat_config.json", None)'
 
 EXPOSE 8864 

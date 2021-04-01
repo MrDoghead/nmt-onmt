@@ -1,5 +1,5 @@
 {
-  "raw_org_data": "/data/translate/hb_trans/raw_para_corpus/all_1kw",
+  "raw_org_data": "/data/tao.hu/all_1kw_full",
   "raw_tag_data": "data/offline_data/raw_para_corpus/all_1kw_tagged_v2",
   "preped_dir": "data/offline_data/prep_corpus/prep_1kw_tagged_v2",
   "preped_base_name": "all",
@@ -8,7 +8,10 @@
   "src_test_path": "val.en",
   "dst_train_path": "train.zh",
   "dst_test_path": "val.zh",
+
   "train_info":{
+    "model_dtype": "fp16",
+    "apex_opt_level": "O2",
     "train_fmt_path": "data/offline_data/nmt_1kw_v2/tagged_en",
     "src_seq_length": 200,
     "tgt_seq_length": 200,
@@ -23,35 +26,37 @@
     "train_steps": 200000,
     "max_generator_batches": 2,
     "dropout": 0.1,
-    "batch_size": 1024,
+    "batch_size": 2048,
     "valid_batch_size": 32,
     "batch_type": "tokens",
     "normalization": "tokens",
-    "accum_count": 4,
-    "optim": "adam",
+    "accum_count": 8,
+    "optim": "fusedadam",
     "adam_bta2": 0.998,
     "decay_method": "noam",
-    "warmup_steps": 16000,
+    "warmup_steps": 8000,
     "learing_rate": 2,
     "max_grad_norm": 0,
     "param_init": 0,
     "param_init_glorot": null,
     "label_smoothing": 0.1,
-    "valid_steps": 5000,
-    "save_checkpoint_steps": 5000,
+    "keep_checkpoint": 20,
+    "valid_steps": 4000,
+    "save_checkpoint_steps": 4000,
     "world_size": 4,
     "gpu_ranks": [0, 1, 2, 3]
   },
-  "model_path": "data/online_data/model_bin/nmt/cht",
+  "model_path": "data/offline_data/model_bin/nmt_en_zh/cht",
   "eval_info": {
-    "model_suffix": "_step_50000.pt",
+    "model_suffix": "_avg.pt",
+    "quantization": "float16",
     "replace_unk": null,
     "verbose": null,
-    "output": "data/offline_data/test_pred.cht",
-	"quantization": "float16"
+    "output": "data/offline_data/test_pred.cht"
   },
   "pred_info": {
-    "c_model_path": "data/online_data/nmt_c_trans.pt",
+    "c_model_path": "data/online_data/nmt_en_zh.pt",
+    "c_translate_thread": 8,
     "model_spec": "TransformerBase"
   }
 }

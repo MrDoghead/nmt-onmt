@@ -15,7 +15,7 @@ class Converter(object):
         self.num_layers = self.conf.train_info.layers
         self.num_heads = self.conf.train_info.heads
         self.model_path = file_helper.get_abs_path(self.conf.model_path) + self.conf.eval_info.model_suffix
-        self.quant = self.conf.eval_info.quantization
+        self.quant = getattr(self.conf.eval_info, "quantization", None)
 
     def get_args(self):
         need_keys = {"model_path", "model_spec", "output_dir"}

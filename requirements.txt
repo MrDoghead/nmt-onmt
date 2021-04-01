@@ -14,4 +14,4 @@ flask_cors
 pyahocorasick==1.4.0
 pymysql
 flask_apscheduler
-
+pyarrow
