@@ -7,7 +7,7 @@ import copy
 from nmt_trans.utils import data_getter
 from nmt_trans.tags.base_tag import BaseTagHelper
 
-data_getter.get_data()
+# data_getter.get_data()
 
 
 class TagHelper(BaseTagHelper):

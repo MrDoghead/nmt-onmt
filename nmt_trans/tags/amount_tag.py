@@ -93,7 +93,7 @@ class TagHelper(BaseTagHelper):
                     amount_unit = amount_name
                     amount_num = self.amount / threshold
                     break
-            amount_num = np.around(amount_num, decimals=6)
+            amount_num = np.around(np.array(amount_num, dtype=np.float64), decimals=6)
             amount_num = amount_num[0]
             
             def num2str(x):

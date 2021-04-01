@@ -1,5 +1,5 @@
 {
-  "raw_org_data": "/data/tao.hu/all_1kw_full",
+  "raw_org_data": "/home/ubuntu/data/trans_data",
   "raw_tag_data": "data/offline_data/raw_para_corpus/all_1kw_tagged_v2",
   "preped_dir": "data/offline_data/prep_corpus/prep_1kw_tagged_v2",
   "preped_base_name": "all",
@@ -14,11 +14,11 @@
      "preprocess": {
      	"source-lang": "en",
      	"target-lang": "zh",
-	    "trainpref": "data/offline_data/prep_corpus/prep_1kw_tagged_v2/train",
+	"trainpref": "data/offline_data/prep_corpus/prep_1kw_tagged_v2/train",
         "validpref": "data/offline_data/prep_corpus/prep_1kw_tagged_v2/val", 
     	"testpref": "data/offline_data/raw_para_corpus/haitong_test/test",
         "destdir":  "data/offline_data/fairseq_en_zh_data_bin",
-        "workers": 24
+        "workers": 8 
      },
      "train": {
         "save_dir": "data/offline_data/model_bin/en_zh/fq_lg_layer_drop",
@@ -27,7 +27,7 @@
     	"encoder-normalize-before": null,
        	"decoder-normalize-before": null, 
     	"max-source-positions": 5000 ,
-	    "encoder-learned-pos": null,
+	"encoder-learned-pos": null,
     	"max-target-positions": 5000, 
     	"decoder-learned-pos": null,
     	"left-pad-source": false,
@@ -36,12 +36,12 @@
        	"adam-betas": "(0.9, 0.98)",
        	"clip-norm": 0.0, 
     	"lr": 7e-4, 
-	    "lr-scheduler": "inverse_sqrt",
-	    "warmup-updates": 4000,
+	"lr-scheduler": "inverse_sqrt",
+	"warmup-updates": 4000,
     	"dropout": 0.3, 
-	    "weight-decay": 0.0,
+	"weight-decay": 0.0,
     	"criterion": "label_smoothed_cross_entropy", 
-	    "label-smoothing": 0.1,
+	"label-smoothing": 0.1,
     	"max-tokens": 2048,
        	"update-freq": 32, 
     	"max-epoch": 60, 
@@ -51,8 +51,8 @@
     	"log-format": "simple",
         "encoder-layerdrop": 0.5,
         "decoder-layerdrop": 0.5,
-	    "fp16": null,
-	    "ddp-backend": "no_c10d"
+	"fp16": null,
+	"ddp-backend": "no_c10d"
      },
      "infer": {
         "path": "checkpoint_best.pt",
