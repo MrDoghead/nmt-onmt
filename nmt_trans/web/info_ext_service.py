@@ -44,14 +44,14 @@ def get_filter_info():
             "status": 1,
             "msg": "没有解析到text_list, 请检查传入的参数"
         }
-        return json.dumps(result)
+        return json.dumps(result, ensure_ascii=False)
 
     infos = predictor.predict(sen_info_arr)
     result = {
         "status": 0,
         "msg": infos
     }
-    return json.dumps(result)
+    return json.dumps(result, ensure_ascii=False)
 
 
 @route_entity.route('/zh2en', methods=['POST', 'GET'])

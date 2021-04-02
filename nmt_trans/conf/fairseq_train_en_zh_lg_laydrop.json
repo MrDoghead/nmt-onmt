@@ -16,7 +16,7 @@
      	"target-lang": "zh",
 	"trainpref": "data/offline_data/prep_corpus/prep_1kw_tagged_v2/train",
         "validpref": "data/offline_data/prep_corpus/prep_1kw_tagged_v2/val", 
-    	"testpref": "data/offline_data/raw_para_corpus/haitong_test/test",
+    	"testpref": "data/offline_data/prep_corpus/prep_1kw_tagged_v2/val",
         "destdir":  "data/offline_data/fairseq_en_zh_data_bin",
         "workers": 8 
      },

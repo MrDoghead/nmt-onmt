@@ -1,5 +1,5 @@
 {
-  "raw_org_data": "/data/tao.hu/all_1kw_full",
+  "raw_org_data": "/home/ubuntu/data/trans_data",
   "raw_tag_data": "data/offline_data/raw_para_corpus/all_1kw_tagged_v2",
   "preped_dir": "data/offline_data/prep_corpus/prep_1kw_tagged_v2",
   "preped_base_name": "all",
@@ -15,7 +15,7 @@
     "train_fmt_path": "data/offline_data/nmt_1kw_v2/tagged_en",
     "src_seq_length": 200,
     "tgt_seq_length": 200,
-    "layers": 4,
+    "layers": 6,
     "rnn_size": 512,
     "word_vec_size": 512,
     "transformer_ff": 2048,
@@ -23,10 +23,10 @@
     "encoder_type": "transformer",
     "decoder_type": "transformer",
     "position_encoding": null,
-    "train_steps": 200000,
+    "train_steps": 80000,
     "max_generator_batches": 2,
     "dropout": 0.1,
-    "batch_size": 2048,
+    "batch_size": 512,
     "valid_batch_size": 32,
     "batch_type": "tokens",
     "normalization": "tokens",
@@ -43,8 +43,8 @@
     "keep_checkpoint": 20,
     "valid_steps": 4000,
     "save_checkpoint_steps": 4000,
-    "world_size": 4,
-    "gpu_ranks": [0, 1, 2, 3]
+    "world_size": 1,
+    "gpu_ranks": [0]
   },
   "model_path": "data/offline_data/model_bin/nmt_en_zh/cht",
   "eval_info": {

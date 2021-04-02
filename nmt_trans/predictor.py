@@ -103,7 +103,7 @@ class Predictor(object):
             elif i in map_idxes:
                 ff_result.append(map_idxes[i])
             else:
-                ff_result.append(self.tag_helper.decode_zh(out_sen, en_words_arr[i]))
+                ff_result.append(self.tag_helper.decode_zh(out_sen, en_words_arr[i])[0])
 
         ff_result = self.final_proc(ff_result)
         return ff_result
@@ -184,7 +184,7 @@ class Predictor(object):
 
 
 def test(sens):
-    conf_path = file_helper.get_conf_file("chat_config.json")
+    conf_path = file_helper.get_conf_file("en_zh_config.json")
     conf = conf_parser.parse_conf(conf_path)
     dict_path = file_helper.get_online_data("caijing_clean.csv")
     predictor = Predictor(conf, dict_path)
