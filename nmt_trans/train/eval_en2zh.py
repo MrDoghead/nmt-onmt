@@ -55,9 +55,10 @@ def bleu(gt, pred):
 
 
 def _split_texts(text_arr):
+    tokenizer = BaseTokenizer()
     res = []
     for text in text_arr:
-        words = BaseTokenizer.tokenize(text)
+        words = tokenizer.tokenize(text)
         res.append(" ".join(words))
     return res
 
