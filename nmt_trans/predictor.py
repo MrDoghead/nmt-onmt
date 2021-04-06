@@ -20,7 +20,7 @@ class Predictor(object):
     def __init__(self, conf, cus_dict):
         self.conf = conf
         model_path = file_helper.get_real_path(self.conf.pred_info.c_model_path)
-        self.translator = ctranslate2.Translator(model_path)
+        self.translator = ctranslate2.Translator(model_path,device="auto")
         self.bpe = self._load_bpe()
         self.bpe_symbol = "@@ "
         self.tokenizer = mose_tokenizer.MTokenizer("en")

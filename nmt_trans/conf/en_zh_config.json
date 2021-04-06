@@ -46,7 +46,7 @@
   },
   "model_path": "data/offline_data/model_bin/nmt_en_zh/cht",
   "eval_info": {
-    "model_suffix": "_step_8000.pt",
+    "model_suffix": "_step_16000.pt",
     "quantization": "float16",
     "replace_unk": null,
     "verbose": null,

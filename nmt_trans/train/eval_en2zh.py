@@ -6,6 +6,7 @@ from nmt_trans.tokenizer.basic_tokenizer import BaseTokenizer
 import sacrebleu
 import os
 import sys
+from tqdm import tqdm
 
 
 def main(conf_path, test_dir):
@@ -33,18 +34,24 @@ def main(conf_path, test_dir):
 
     start = 0
     pred_zh = []
-    while start < len(test_zh):
+    for start in tqdm(range(0, len(test_zh), bs)):
+        print(f"start is {start}")
+        if start + bs > 1000:
+            print(test_en[start:start+bs])
         tmp = predictor.predict(test_en[start:start + bs])
+        print(f"cur_len of cur_start: {len(tmp)}")
         pred_zh.extend(tmp)
-        start += bs
-        print('\n\n'.join(tmp))
+        # print('\n\n'.join(tmp))
+        print(f"current len of pred is: {len(pred_zh)}")
+    print(len(pred_zh))
+    print(len(test_zh))
 
     pred_en_path = 'test.pred.en'
 
     with open(pred_en_path, 'w') as f_p_e:
         f_p_e.write('\n'.join(pred_zh))
 
-    bleu(test_zh, pred_zh)
+    bleu(test_zh, pred_zh[:len(test_zh)])
 
 
 def bleu(gt, pred):
