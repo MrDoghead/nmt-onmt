@@ -28,6 +28,7 @@ class Trainer(object):
         args_arr = conf_parser.dict2args(args_dict)
         f_args_arr = [self.input_data]
         f_args_arr.extend(args_arr)
+        print(f_args_arr)
         args = options.parse_args_and_arch(parser, input_args=f_args_arr)
         return args
 

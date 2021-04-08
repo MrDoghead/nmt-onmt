@@ -78,7 +78,7 @@ class Predictor(object):
     def _init_model(self, cfg):
         utils.import_user_module(cfg.common)
         if cfg.dataset.max_tokens is None and cfg.dataset.batch_size is None:
-            cfg.dataset.batch_size = 1
+            cfg.dataset.batch_size = 16 
 
         logger.info(cfg)
         # Fix seed for stochastic decoding
