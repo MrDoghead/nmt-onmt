@@ -33,6 +33,8 @@ class PrecessTag(object):
         langs = ["en", "zh"]
         org_files = [os.path.join(in_dir, base_name + "." + lang) for lang in langs]
         out_files = [os.path.join(out_dir, base_name + "." + lang) for lang in langs]
+        print('in_file:',org_files)
+        print('out_file:',out_files)
         with open(org_files[0]) as in_en, \
              open(org_files[1]) as in_zh, \
              open(out_files[0], "w") as out_en, \

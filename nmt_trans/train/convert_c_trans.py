@@ -15,8 +15,10 @@ class Converter(object):
         self.num_layers = self.conf.train_info.layers
         self.num_heads = self.conf.train_info.heads
         self.model_path = file_helper.get_abs_path(self.conf.model_path) + self.conf.eval_info.model_suffix
+        print(f"model_path: {self.model_path}")
         self.quant = getattr(self.conf.eval_info, "quantization", None)
-
+    
+    '''
     def get_args(self):
         need_keys = {"model_path", "model_spec", "output_dir"}
         model_path = file_helper.get_abs_path(self.conf.model_path) + self.conf.eval_info.model_suffix
@@ -33,11 +35,12 @@ class Converter(object):
         args_arr = conf_parser.dict2args(args_dict)
         args_str = " ".join(args_arr)
         return args_str
-
+    '''
     def run(self):
         model_spec = transformer_spec.TransformerSpec(self.num_layers, self.num_heads)
         converter = opennmt_py.OpenNMTPyConverter(self.model_path)
         out_path = file_helper.get_abs_path(self.conf.pred_info.c_model_path)
+        print(f'out_path: {out_path}')
         file_helper.mk_folder_for_file(out_path)
         converter.convert(out_path, model_spec, quantization=self.quant, force=True)
 

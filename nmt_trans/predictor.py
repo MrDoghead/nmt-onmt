@@ -146,7 +146,7 @@ class Predictor(object):
         """
         用来切分句子， 当句子长度超过150个单词的时候，
         """
-        thres = 100
+        thres = 150
         if len(sen.strip().split()) < thres:
             return [sen]
         res = split_sub_sen(sen)
@@ -161,15 +161,16 @@ class Predictor(object):
         sub_sens = []
         for i, sen in enumerate(sens):
             cur_sub_sens = self._split_sub_sen(sen)
+            #print(sen,cur_sub_sens)
             if cur_sub_sens is not None:
                 sub_sens.extend(cur_sub_sens)
             for j in range(len(cur_sub_sens)):
                 sen_no_map[begin+j] = i
-                begin += len(cur_sub_sens)
+            begin += len(cur_sub_sens)
         return sub_sens, sen_no_map
 
     def merge_sub_sens(self, sub_sens, sen_no_map):
-        mid_sens = [""] * len(sen_no_map)
+        mid_sens = [""] * len(set(sen_no_map.values()))
         for i, sub_sen in enumerate(sub_sens):
             if i in sen_no_map:
                 j = sen_no_map[i]

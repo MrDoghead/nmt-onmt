@@ -77,21 +77,26 @@ def main(in_dir, out_dir, base_name):
     tmp_dir = os.path.join(out_dir, "tmp")
     _prepare_out_dir(out_dir)
     # 第一步对句子进行clean, 然后对句子进行分词, 并且保存到切好词的地方。
+    print('start clean_and_tok...')
     tok_path_arr = []
     for lang in ["en", "zh"]:
         tok_f_path = _clean_and_tok(in_dir, tmp_dir, base_name, lang, preparer)
         tok_path_arr.append(tok_f_path)
 
     # 第二步对这两个文件进行过滤；
+    print('start filtering...')
     filtered_path_arr = _do_filter(tok_path_arr, tmp_dir)
 
     # 第三步对file 进行split， 分成训练集合测试集
+    print('making train/val data...')
     train_arr, val_arr = _main_split_dir(filtered_path_arr, tmp_dir)
 
     # 第四步：生成bpe code
+    print('generating bpe code...')
     code_arr = _main_create_bpe(out_dir, train_arr)
 
     # 第五步： 对所有的测试数据以及训练数据进行bpe 编码
+    print('applying bpe code...')
     _main_apply_bpe(out_dir, train_arr, code_arr)
     _main_apply_bpe(out_dir, val_arr, code_arr)
 
@@ -107,6 +112,8 @@ def _clean_and_tok(in_dir, out_dir, base_name, lang, preparer):
     batch_size = 5000000
     in_file = _mk_file_name(in_dir, base_name, lang)
     out_file = _mk_file_name(out_dir, base_name + ".tok", lang)
+    print(f'in_file:{in_file}')
+    print(f'out_file:{out_file}')
 
     with open(in_file) as in_:
         with open(out_file, "w") as out_:
@@ -291,6 +298,8 @@ def _main_apply_bpe(out_dir, f_arr, code_arr):
         if not code_path.endswith(lang):
             code_path = code_arr[1]
         out_path = os.path.join(out_dir, os.path.basename(f_path))
+        print('bpe-out-path:',out_path)
+        sys.exit()
         _apply_bpe(out_path, f_path, code_path)
 
 

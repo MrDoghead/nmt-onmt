@@ -15,13 +15,14 @@ def main(conf_path, test_dir):
     predictor = Predictor(conf, dict_path)
 
     test_zh_path, test_en_path = [os.path.join(test_dir, name)
-                                  for name in ['test.zh', 'test.en']]
+                                  for name in ['val.zh', 'val.en']]
 
     with open(test_zh_path) as f_t_z, \
             open(test_en_path) as f_t_e:
-        test_zh = f_t_z.readlines()
-        test_en = f_t_e.readlines()
+         test_zh = f_t_z.readlines()
+         test_en = f_t_e.readlines()
 
+    '''    
     bs = 1
     if 'speed_baseline' not in sys.argv:
         bs = 16
@@ -29,34 +30,38 @@ def main(conf_path, test_dir):
         test_zh, test_en = \
             zip(
                 *(sorted(zip(test_zh, test_en),
-                         key=lambda x: len(x[0])))
+                         key=lambda x: len(x[0]), reverse=True))
             )
+    '''
 
+    bs = 4
+    #bs = 1
     start = 0
     pred_zh = []
     for start in tqdm(range(0, len(test_zh), bs)):
-        print(f"start is {start}")
-        if start + bs > 1000:
-            print(test_en[start:start+bs])
-        tmp = predictor.predict(test_en[start:start + bs])
-        print(f"cur_len of cur_start: {len(tmp)}")
-        pred_zh.extend(tmp)
-        # print('\n\n'.join(tmp))
-        print(f"current len of pred is: {len(pred_zh)}")
-    print(len(pred_zh))
-    print(len(test_zh))
+        en_sens = test_en[start:start + bs]
+        zh_sens = test_zh[start:start + bs]
+        pred_sens = predictor.predict(en_sens)
+        #print(f'org_en: \n {en_sens}')
+        #print(f'pred: \n {pred_sens}')
+        #print(f'org_zh: \n {zh_sens}')
+        pred_zh.extend(pred_sens)
+    print('pred_zh len:',len(pred_zh))
+    print('test_zh len:',len(test_zh))
 
-    pred_en_path = 'test.pred.en'
+    pred_path_zh = file_helper.get_abs_path(conf.eval_info.output)
 
-    with open(pred_en_path, 'w') as f_p_e:
-        f_p_e.write('\n'.join(pred_zh))
-
-    bleu(test_zh, pred_zh[:len(test_zh)])
-
+    with open(pred_path_zh, 'w') as f_p:
+        f_p.write('\n'.join(pred_zh))
+    
+    bleu(test_zh, pred_zh)
+    
 
 def bleu(gt, pred):
     gt = _split_texts(gt)
     pred = _split_texts(pred)
+    #print(f"gt: {gt}")
+    #print(f"pred: {pred}")
     res = sacrebleu.corpus_bleu(pred, [gt])
     print(res.format())
 

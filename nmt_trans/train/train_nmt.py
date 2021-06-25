@@ -1,5 +1,6 @@
 # coding=utf8
 
+import sys
 from onmt.bin import train
 from nmt_trans.utils import file_helper, conf_parser
 
@@ -24,6 +25,8 @@ class Trainer(object):
     def get_args(self, parser):
         train_path = file_helper.get_abs_path(self.conf.train_info.train_fmt_path)
         model_path = file_helper.get_abs_path(self.conf.model_path)
+        print('train path:',train_path)
+        print('model path:',model_path)
         file_helper.mk_folder_for_file(model_path)
         args_dict = {
             "data": train_path,
@@ -32,19 +35,21 @@ class Trainer(object):
         conf_dict = conf_parser.conf2dict(self.conf.train_info)
         args_dict.update(conf_dict)
         args_arr = conf_parser.dict2args(args_dict)
+        #print(args_arr)
         args, _ = parser.parse_known_args(args_arr)
+        #print(args)
         return args
 
     def train(self):
         parser = train._get_parser()
         args = self.get_args(parser)
+        #print('args:',args)
         train.train(args)
 
 
 if __name__ == "__main__":
     import sys
     t_conf_path = sys.argv[1]
-    # t_conf_path = file_helper.get_conf_file("chat_config.json")
     conf = conf_parser.parse_conf(t_conf_path)
     t_trainer = Trainer(conf)
     t_trainer.train()

@@ -1,8 +1,8 @@
 {
-  "raw_org_data": "/data/tao.hu/all_1kw_full",
+  "raw_org_data": "/home/ubuntu/caodongnan/work/nmt_opennmt/data/UNv1.0.en-zh/train_dataset",
   "raw_tag_data": "data/offline_data/raw_para_corpus/all_1kw_tagged_v2",
   "preped_dir": "data/offline_data/prep_corpus/prep_1kw_tagged_v2",
-  "preped_base_name": "all",
+  "preped_base_name": "UNv1.0.zh-en",
   "bpe_code_path": "data/online_data/bpe",
   "src_train_path": "train.zh",
   "src_test_path": "val.zh",
@@ -10,8 +10,6 @@
   "dst_test_path": "val.en",
 
   "train_info":{
-    "model_dtype": "fp16",
-    "apex_opt_level": "O2",
     "train_fmt_path": "data/offline_data/nmt_1kw_v2/tagged_zh",
     "src_seq_length": 200,
     "tgt_seq_length": 200,
@@ -23,7 +21,7 @@
     "encoder_type": "transformer",
     "decoder_type": "transformer",
     "position_encoding": null,
-    "train_steps": 200000,
+    "train_steps": 80000,
     "max_generator_batches": 2,
     "dropout": 0.1,
     "batch_size": 2048,
@@ -31,7 +29,7 @@
     "batch_type": "tokens",
     "normalization": "tokens",
     "accum_count": 8,
-    "optim": "fusedadam",
+    "optim": "adam",
     "adam_bta2": 0.998,
     "decay_method": "noam",
     "warmup_steps": 8000,
@@ -40,11 +38,11 @@
     "param_init": 0,
     "param_init_glorot": null,
     "label_smoothing": 0.1,
-    "keep_checkpoint": 20,
+    "keep_checkpoint": 4000,
     "valid_steps": 4000,
     "save_checkpoint_steps": 4000,
-    "world_size": 4,
-    "gpu_ranks": [0, 1, 2, 3]
+    "world_size": 1,
+    "gpu_ranks": [0]
   },
   "model_path": "data/offline_data/model_bin/nmt_zh_en/cht",
   "eval_info": {
@@ -52,11 +50,11 @@
     "quantization": "float16",
     "replace_unk": null,
     "verbose": null,
-    "output": "data/offline_data/test_pred.cht"
+    "output": "data/offline_data/val_pred.en"
   },
   "pred_info": {
     "c_model_path": "data/online_data/nmt_zh_en.pt",
-    "c_translate_thread": 16,
+    "c_translate_thread": 8,
     "model_spec": "TransformerBase"
   }
 }

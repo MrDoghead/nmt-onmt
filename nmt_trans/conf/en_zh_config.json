@@ -1,8 +1,8 @@
 {
-  "raw_org_data": "/home/ubuntu/data/trans_data",
+  "raw_org_data": "/home/ubuntu/caodongnan/work/nmt_opennmt/data/UNv1.0.en-zh/train_dataset",
   "raw_tag_data": "data/offline_data/raw_para_corpus/all_1kw_tagged_v2",
   "preped_dir": "data/offline_data/prep_corpus/prep_1kw_tagged_v2",
-  "preped_base_name": "all",
+  "preped_base_name": "UNv1.0.en-zh",
   "bpe_code_path": "data/online_data/bpe",
   "src_train_path": "train.en",
   "src_test_path": "val.en",
@@ -46,11 +46,11 @@
   },
   "model_path": "data/offline_data/model_bin/nmt_en_zh/cht",
   "eval_info": {
-    "model_suffix": "_step_16000.pt",
+    "model_suffix": "_avg.pt",
     "quantization": "float16",
     "replace_unk": null,
     "verbose": null,
-    "output": "data/offline_data/test_pred.cht"
+    "output": "data/offline_data/val_pred.zh"
   },
   "pred_info": {
     "c_model_path": "data/online_data/nmt_en_zh.pt",

@@ -19,21 +19,22 @@ class RawPreprocessor(object):
         self.prep_dir = file_helper.get_abs_path(self.conf.preped_dir)
         self.prep_base_name = self.conf.preped_base_name
         dict_path = file_helper.get_online_data("caijing_clean.csv")
+        print(f'org_corpus: {self.org_corpus_dir}')
+        print(f'org_tag: {self.org_tag_dir}')
+        print(f'prep: {self.prep_dir}')
+        print(f'prep_base_name: {self.prep_base_name}')
         self.tag_adder = add_tag.PrecessTag(dict_path)
-        self.mk_dirs()
-        self.bpe_path = file_helper.get_abs_path(self.conf.bpe_code_path)
 
-    def mk_dirs(self):
-        dir_arr = [
-            self.org_tag_dir,
-            self.prep_dir
-        ]
+        dir_arr = [self.org_tag_dir,self.prep_dir]
         for dir_ in dir_arr:
             os.makedirs(dir_, exist_ok=True)
 
+        self.bpe_path = file_helper.get_abs_path(self.conf.bpe_code_path)
+
     def run(self):
-        self.tag_adder.process_parallel(self.org_corpus_dir, self.org_tag_dir, self.prep_base_name)
-        print("finished adding data")
+        print('start adding tags...')
+        #self.tag_adder.process_parallel(self.org_corpus_dir, self.org_tag_dir, self.prep_base_name)
+        print("finish adding tags...")
         tok_and_clean.main(self.org_tag_dir, self.prep_dir, self.prep_base_name)
         # 最后将bpe 放到online_data 为便于预测
         file_helper.cp_f(os.path.join(self.prep_dir, "code.en"), self.bpe_path)
