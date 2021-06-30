@@ -30,6 +30,7 @@ class Predictor(object):
         model_path = file_helper.get_real_path(self.conf.pred_info.c_model_path)
         self.translator = ctranslate2.Translator(
             model_path,
+            device="auto",
             intra_threads=self.conf.pred_info.c_translate_thread
         )
         self.bpe = self._load_bpe()
