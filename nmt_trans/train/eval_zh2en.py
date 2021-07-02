@@ -37,7 +37,7 @@ def main(conf_path, test_dir):
     bs = 64
     start = 0
     pred_en = []
-    test_en = test_en[100]
+
     for start in tqdm(range(0, len(test_en), bs)):
         en_sens = test_en[start:start + bs]
         zh_sens = test_zh[start:start + bs]

@@ -211,18 +211,20 @@ class Predictor(object):
         space_pat = re.compile(r'\s+')
         input_sens = [space_pat.sub(' ', sen) for sen in input_sens]
         
-        input_sens, wrap_info = self.wrapper.pre_process(input_sens)
+        #input_sens, wrap_info = self.wrapper.pre_process(input_sens)
 #        sub_sens, sen_no_map = self.split_sub_sens(input_sens)
 #        trans_res, sub_states = self._predict_impl(sub_sens)
         res, states = self._predict_impl(input_sens)
 #        res, states = self.merge_sub_sens(trans_res, sen_no_map)
-        out_res, out_states = self.wrapper.post_process_with_states(res, states, wrap_info)
+        #out_res, out_states = self.wrapper.post_process_with_states(res, states, wrap_info)
         
         # 英文全角转半角
-        out_res = strQ2B(out_res)
+        #out_res = strQ2B(out_res)
+        out_res = strQ2B(res)
         # / 边上的空格 去掉
         out_res = [sen.replace(' / ', '/').replace(' & ', '&') for sen in out_res]
-        return out_res, out_states
+        #return out_res, out_states
+        return out_res
 
 
 def test(sens, conf_name):
@@ -238,5 +240,6 @@ def test(sens, conf_name):
 if __name__ == "__main__":
     import sys
     conf_path = sys.argv[1]
-    test_sen = ["hello world", "I don't think so", "你又有男朋友吗？ ", "这病有药治疗吗?"]
+    #test_sen = ["你好世界", "我不这么认为", "你有男朋友吗？ ", "这病有药治疗吗?"]
+    test_sen = ["1994 年 5 月 17 日 安全 理事会 第 3@@ 377 次 会议 通过"]
     test(test_sen, conf_path)

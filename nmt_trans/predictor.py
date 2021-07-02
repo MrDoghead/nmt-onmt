@@ -84,6 +84,7 @@ class Predictor(object):
     def _predict_impl(self, input_sens):
         emp_idxes = set()
         map_idxes = dict()
+        # i doubt
         for i, sen in enumerate(input_sens):
             if len(sen.strip()) == 0:
                 emp_idxes.add(i)
@@ -112,7 +113,11 @@ class Predictor(object):
         res_sen = []
         res_dict = []
         for sen in sens:
+            print(sen)
             out_sen, out_map = self.tag_helper.encode_en(sen)
+            print(out_sen)
+            print(out_map)
+            sys.exit()
             res_sen.append(out_sen)
             res_dict.append(out_map)
         return res_sen, res_dict
@@ -195,5 +200,7 @@ def test(sens):
 
 
 if __name__ == "__main__":
-    test_sen = ["hello world", "I don't think so", "你又有男朋友吗？ ", "这病有药治疗吗?"]
+    #test_sen = ["hello world", "I don't think so", "你又有男朋友吗？ ", "这病有药治疗吗?"]
+    #test_sen = ["Adopted by the Security Council at its 33@@ 7@@ 7th meeting , on 17 May 1994"]
+    test_sen = ["The Sun@@ set satellite being developed by graduate students in electronic engineering at St@@ ell@@ en@@ b@@ os@@ ch University in South Africa is planned for launch early in 1996 ."]
     test(test_sen)
