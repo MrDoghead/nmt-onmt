@@ -35,7 +35,6 @@ class Trainer(object):
         conf_dict = conf_parser.conf2dict(self.conf.train_info)
         args_dict.update(conf_dict)
         args_arr = conf_parser.dict2args(args_dict)
-        #print(args_arr)
         args, _ = parser.parse_known_args(args_arr)
         #print(args)
         return args

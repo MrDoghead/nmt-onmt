@@ -31,6 +31,7 @@ class NMTProcessor(object):
     def run(self):
         parser = preprocess._get_parser()
         args, _ = self.get_args(parser)
+        print(vars(args))
         preprocess.preprocess(args)
 
 

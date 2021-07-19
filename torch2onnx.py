@@ -44,38 +44,45 @@ def run(conf,pt_path,onnx_path):
     print('args parsing...')
     args, _ = parser.parse_known_args(args_arr)
 
-    model = load_model(args,pt_path)
-    print('model ok')
-    sys.exit()
+    #import os 
+    #if not os.path.exists(onnx_path): 
+    #    os.makedirs(onnx_path)
 
+    # load model
+    model = load_model(args,pt_path)
     model.eval()
     
     # Input to the model
-    bs = 1
+    batch_size = 1
+    seq_len = 200
     # input size batch_size * seq_len
-    x = torch.randn(batch_size, bs, 200, requires_grad=True)
-    #torch_out = torch_model(x)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    dummy_src = torch.randint(0,100,(seq_len, batch_size, 1),device=device)
+    dummy_tgt = torch.randint(0,100,(seq_len, batch_size, 1),device=device)
+    dummy_length = torch.tensor([batch_size,],device=device)
 
+    #data = torch.load('test_in.pt')
+    #dummy_src,dummy_tgt,dummy_length = data
+
+    print(f"exporting onnx to {onnx_path}")
     # Export the model
-    '''
-    torch.onnx.export(torch_model,               # model being run
-            x,                         # model input (or a tuple for multiple inputs)
+    torch.onnx.export(model,               # model being run
+            (dummy_src, dummy_tgt, dummy_length),               # model input (or a tuple for multiple inputs)
             onnx_path,   # where to save the model (can be a file or file-like object)
             export_params=True,        # store the trained parameter weights inside the model file
-            opset_version=10,          # the ONNX version to export the model to
+            opset_version=12,          # the ONNX version to export the model to
             do_constant_folding=True,  # whether to execute constant folding for optimization
             input_names = ['input'],   # the model's input names
             output_names = ['output'], # the model's output names
-            dynamic_axes={'input' : {0 : 'batch_size'},    # variable lenght axes
-                'output' : {0 : 'batch_size'}
+            dynamic_axes={'input' : {1 : 'batch_size'},    # variable lenght axes
+                'output' : {1 : 'batch_size'}
                 }
             )
-    '''
 
 if __name__=='__main__':
     #pt_path = './data/offline_data/model_bin/nmt_en_zh/cht_avg.pt'
     pt_path = './data/offline_data/model_bin/nmt_en_zh/cht_step_80000.pt'
-    onnx_path = '/data/offline_data/model_bin/onnx/nmt_en_zh.onnx'
+    onnx_path = '/home/ubuntu/caodongnan/work/nmt_opennmt/data/offline_data/model_bin/onnx/nmt_en_zh.onnx'
     conf_path = '/home/ubuntu/caodongnan/work/nmt_opennmt/nmt_trans/conf/en_zh_config.json'
     conf = conf_parser.parse_conf(conf_path)
     run(conf,pt_path,onnx_path)

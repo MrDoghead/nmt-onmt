@@ -75,7 +75,7 @@ class Config(object):
 
 
 if __name__ == "__main__":
-    t_path = "../conf/chat_config.json"
+    t_path = "../conf/en_zh_config.json"
     test_conf = parse_conf(t_path)
     evl_conf = test_conf.train_info
     t_d = conf2dict(evl_conf)
